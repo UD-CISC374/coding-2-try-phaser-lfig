@@ -17,6 +17,11 @@ export default class MainScene extends Phaser.Scene {
     this.exampleObject = new ExampleObject(this, 0, 0);
   }
 
+  moveShip(ship, speed){
+    ship.y += speed;
+  }
+
   update() {
+    this.moveShip()
   }
 }
