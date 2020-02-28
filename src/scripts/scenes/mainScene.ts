@@ -1,4 +1,6 @@
 import ExampleObject from '../objects/exampleObject';
+import beam from '../objects/beam';
+import Beam from '../objects/beam';
 
 export default class MainScene extends Phaser.Scene {
   private exampleObject: ExampleObject;
@@ -10,7 +12,7 @@ export default class MainScene extends Phaser.Scene {
   ship; 
   ship2;
   ship3;
-  background;
+  sky;
   powerUps;
   player;
   cursorKeys;
@@ -19,8 +21,8 @@ export default class MainScene extends Phaser.Scene {
   enemies;
 
   create() {
-    this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, "background");
-    this.background.setOrigin(0,0);
+    this.sky = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, "background");
+    this.sky.setOrigin(0,0);
     this.ship = this.add.sprite(this.scale.width/2-50, this.scale.height/2, "ship");
     this.ship2 = this.add.sprite(this.scale.width/2, this.scale.height/2, "ship2");
     this.ship3 = this.add.sprite(this.scale.width/2+50, this.scale.height/2, "ship3");
@@ -53,12 +55,15 @@ export default class MainScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.projectiles = this.add.group();
+    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, undefined, this);
+    this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, undefined, this);
+    this.physics.add.collider(this.projectiles, this.powerUps);
     this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
       projectile.destroy();
     });
-    this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp);
-    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer);
-    this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy);
+    this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, undefined, this);
+    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, undefined, this);
+    this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, undefined, this);
     this.exampleObject = new ExampleObject(this, 0, 0);
   }
 
@@ -91,10 +96,17 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update() {
+    this.ship.play("ship_anim");
+    this.ship2.play("ship2_anim");
+    this.ship3.play("ship3_anim");
+    this.ship.setInteractive();
+    this.ship2.setInteractive();
+    this.ship3.setInteractive();
+    this.input.on('gameobjectdown', this.destroyShip, this);
     this.moveShip(this.ship, 1);
     this.moveShip(this.ship2, 2);
     this.moveShip(this.ship3, 3);
-    this.background.tilePositionY -= 0.5;
+    this.sky.tilePositionY -= 0.5;
     let gameSettings = {
       playerSpeed: 200,
     } 

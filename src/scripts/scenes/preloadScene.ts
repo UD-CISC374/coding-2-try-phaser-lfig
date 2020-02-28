@@ -8,7 +8,7 @@ export default class PreloadScene extends Phaser.Scene {
   ship3;
   destroyShip;
   preload() {
-    this.load.image("background", "assets/images/background.png");
+    this.load.image("sky", "assets/images/sky.png");
     this.load.spritesheet("ship", "assets/images/ship.png",{
       frameWidth: 16,
       frameHeight: 16
@@ -67,13 +67,7 @@ export default class PreloadScene extends Phaser.Scene {
       repeat: 0,
       hideOnComplete: true
     });
-    this.ship.play("ship_anim");
-    this.ship2.play("ship2_anim");
-    this.ship3.play("ship3_anim");
-    this.ship.setInteractive();
-    this.ship2.setInteractive();
-    this.ship3.setInteractive();
-    this.input.on('gameobjectdown', this.destroyShip, this);
+
     this.anims.create({
       key: "red",
       frames: this.anims.generateFrameNumbers("power-up",{
