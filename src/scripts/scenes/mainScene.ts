@@ -1,6 +1,7 @@
 import ExampleObject from '../objects/exampleObject';
 import Beam from '../objects/beam';
 import Explosion from '../objects/explosion';
+import { Scene } from 'phaser';
 
 export default class MainScene extends Phaser.Scene {
   private exampleObject: ExampleObject;
@@ -23,7 +24,6 @@ export default class MainScene extends Phaser.Scene {
   explosionSound;
   pickupSound;
   scoreLabel;
-  music;
 
   create() {
     this.sky = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, "sky");
@@ -68,19 +68,6 @@ export default class MainScene extends Phaser.Scene {
     this.beamSound = this.sound.add("audio_beam");
     this.explosionSound = this.sound.add("audio_explosion");
     this.pickupSound = this.sound.add("audio_pickup");
-    
-    this.music = this.sound.add("music");
-
-    let musicConfig = {
-      mute: false,
-      volume: 1,
-      rate: 1,
-      detune: 0,
-      seek: 0,
-      loop: false,
-      delay: 0
-    }
-    this.music.play(musicConfig);
   }
 
   zeroPad(number, size){
@@ -148,13 +135,13 @@ export default class MainScene extends Phaser.Scene {
 
     this.player.alpha = 0.5;
 
-    let tween = this.tweens.add({
+    let tween = this.tweens.add ({
       targets: this.player,
       y: this.scale.height - 64,
       ease: 'Power1',
       duration: 1500,
       repeat: 0,
-      onComplete: function(){
+      onComplete:()=> {
         this.player.alpha = 1;
       },
       callbackScope: this

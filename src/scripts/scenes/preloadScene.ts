@@ -7,6 +7,7 @@ export default class PreloadScene extends Phaser.Scene {
   ship2;
   ship3;
   destroyShip;
+  music;
   preload() {
     this.load.image("sky", "assets/images/sky.png");
     this.load.spritesheet("ship", "assets/images/ship.png",{
@@ -39,6 +40,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio("audio_explosion", ["assets/sounds/explosion.ogg", "assets/sounds/explosion.mp3"]);
     this.load.audio("audio_pickup", ["assets/sounds/pickup.ogg", "assets/sounds/pickup.mp3"]);
     this.load.audio("audio_beam", ["assets/sounds/sci-fi_platformer12.ogg", "assets/sounds/sci-fi_platformer.mp3"]);
+    
   }
 
   create() {
